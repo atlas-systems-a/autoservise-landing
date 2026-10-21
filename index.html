@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram-бот для онлайн-записи в автосервис</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        /* Problems Section */
+        .problems {
+            padding: 60px 20px;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .problem-card {
+            background: #fff5f5;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .problem-card h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        /* Solutions Section */
+        .solutions {
+            padding: 60px 20px;
+            background: #f8f9fa;
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .solution-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .solution-card .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .solution-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        /* How it works */
+        .how-it-works {
+            padding: 60px 20px;
+            background: white;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .step {
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 60px 20px;
+            background: #f8f9fa;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .price-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .price-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .price-card.featured {
+            border: 3px solid #667eea;
+            position: relative;
+        }
+        
+        .price-card.featured::before {
+            content: 'ПОПУЛЯРНЫЙ';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .price-card h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .price span {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+        
+        .features-list {
+            list-style: none;
+            text-align: left;
+            margin: 30px 0;
+        }
+        
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .features-list li:before {
+            content: '✓ ';
+            color: #27ae60;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        /* Guarantee */
+        .guarantee {
+            padding: 60px 20px;
+            background: white;
+            text-align: center;
+        }
+        
+        .guarantee-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 12px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .guarantee-box h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        /* Footer CTA */
+        .footer-cta {
+            padding: 80px 20px;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+        }
+        
+        .footer-cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-cta p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 26px;
+            }
+            
+            .price {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>🚗 Telegram-бот для онлайн-записи в автосервис</h1>
+            <p>Принимайте записи 24/7, даже когда вы спите. Снижайте неявки на 30% с помощью автоматических напоминаний.</p>
+            <a href="https://t.me/autoservice_test_2026_bot" class="cta-button">Попробовать демо-бота →</a>
+        </div>
+    </section>
+    
+    <!-- Problems Section -->
+    <section class="problems">
+        <div class="container">
+            <h2 class="section-title">Знакомые проблемы?</h2>
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <h3>❌ Клиенты не дозвонились</h3>
+                    <p>Администратор занят, телефон молчит, а клиент уезжает к конкуренту, который ответил за 30 секунд.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>❌ Неявки и простои</h3>
+                    <p>Клиент записался и забыл. Подъемник простаивает, мастер теряет время, вы теряете деньги.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>❌ Бардак в записях</h3>
+                    <p>Блокнот, Excel, стикеры на мониторе. Потеряли номер клиента — потеряли клиента навсегда.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Solutions Section -->
+    <section class="solutions">
+        <div class="container">
+            <h2 class="section-title">Как бот решает эти проблемы</h2>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="icon">🤖</div>
+                    <h3>Работает 24/7</h3>
+                    <p>Клиенты записываются в любое время: ночью, в выходные, в праздники. Вы не теряете ни одной заявки.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="icon">📱</div>
+                    <h3>Автоматические напоминания</h3>
+                    <p>Бот сам напоминает клиентам за день и за 2 часа до визита. Неявки снижаются на 30%.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="icon">🔒</div>
+                    <h3>Защита по 152-ФЗ</h3>
+                    <p>Автоматическое получение согласия клиентов, профессиональная Политика конфиденциальности, ежедневные бэкапы.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="icon">📊</div>
+                    <h3>Удобная админка</h3>
+                    <p>Все записи в одном месте. Видите нагрузку на день, историю клиентов, статистику услуг.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How it works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">Как это работает</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Клиент пишет боту</h3>
+                    <p>Находит ваш бот в Telegram или переходит по ссылке. Нажимает "Записаться".</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Выбирает услугу и время</h3>
+                    <p>Бот показывает доступные слоты. Клиент выбирает удобное время за 30 секунд.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Получает подтверждение</h3>
+                    <p>Бот присылает напоминание. Вы видите запись в админке. Клиент приезжает вовремя.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Тарифы</h2>
+            <div class="pricing-grid">
+                <div class="price-card featured">
+                    <h3>LITE</h3>
+                    <div class="price">1 990 ₽<span>/мес</span></div>
+                    <p>Идеально для небольших автосервисов</p>
+                    <ul class="features-list">
+                        <li>Онлайн-запись 24/7</li>
+                        <li>Автоматические напоминания</li>
+                        <li>Защита по 152-ФЗ</li>
+                        <li>Ежедневные бэкапы</li>
+                        <li>Техподдержка</li>
+                        <li>Настройка под ваш бренд</li>
+                    </ul>
+                    <a href="https://t.me/FAQ_4" class="cta-button">Подключить</a>
+                </div>
+                <div class="price-card">
+                    <h3>STANDARD</h3>
+                    <div class="price">4 990 ₽<span>/мес</span></div>
+                    <p>Для автосервисов с несколькими мастерами</p>
+                    <ul class="features-list">
+                        <li>Всё из тарифа LITE</li>
+                        <li>Несколько мастеров</li>
+                        <li>Онлайн-оплата услуг</li>
+                        <li>Интеграция с CRM</li>
+                        <li>Приоритетная поддержка</li>
+                        <li>Расширенная аналитика</li>
+                    </ul>
+                    <a href="https://t.me/FAQ_4" class="cta-button">Скоро</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Guarantee -->
+    <section class="guarantee">
+        <div class="container">
+            <div class="guarantee-box">
+                <h2>🛡️ Гарантия результата</h2>
+                <p>Если в течение первого месяца бот не принесет вам минимум 5 дополнительных записей, мы вернем деньги за подписку. Без вопросов и условий.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <div class="container">
+            <h2>Готовы увеличить записи на 30%?</h2>
+            <p>Напишите мне в Telegram, и я покажу демо-бота за 2 минуты</p>
+            <a href="https://t.me/FAQ_4" class="cta-button">Написать в Telegram →</a>
+        </div>
+    </section>
+</body>
+</html>
